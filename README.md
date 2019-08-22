@@ -1,5 +1,2 @@
 # Accessors
-Lightweight alternative of .NET PrivateObject / PrivateType.
-
-Under construction...
-(small gif: little man with a pickaxe)
+A class library containing a lightweight .NET Core alternative of old .NET PrivateObject / PrivateType.
