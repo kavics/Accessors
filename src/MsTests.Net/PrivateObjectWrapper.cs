@@ -12,11 +12,9 @@ namespace MsTests.Net
         public PrivateObjectWrapper(object obj) : base(obj) { }
         public PrivateObjectWrapper(object obj, string memberToAccess) : base(obj, memberToAccess) { }
         public PrivateObjectWrapper(Type type, params object[] args) : base(type, args) { }
-        public PrivateObjectWrapper(object obj, PrivateType type) : base(obj, type) { }
         public PrivateObjectWrapper(string assemblyName, string typeName, params object[] args) : base(assemblyName, typeName, args) { }
         public PrivateObjectWrapper(Type type, Type[] parameterTypes, object[] args) : base(type, parameterTypes, args) { }
-        public PrivateObjectWrapper(string assemblyName, string typeName, Type[] parameterTypes, object[] args) : base(assemblyName, typeName, args) { }
-
+        public PrivateObjectWrapper(string assemblyName, string typeName, Type[] parameterTypes, object[] args) : base(assemblyName, typeName, parameterTypes, args) { }
 
         public new object GetField(string name)
         {

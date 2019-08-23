@@ -7,58 +7,67 @@ namespace MsTests.Net
     [TestClass]
     public class PrivateObjectTests
     {
+        /* ============================================================= Construction tests */
+
         [TestMethod]
-        public void Priv_Invoke_Public_withoutParam()
+        public void Priv_Ctor_2Params()
         {
-            var target = new Class1();
-            var targetAcc = new PrivateObjectWrapper(target);
-            var actual = targetAcc.Invoke("PublicMethod");
-            Assert.AreEqual("PublicMethod", actual);
+            var parameters = new object[] { 42, 43L };
+            var targetAcc = new PrivateObjectWrapper(typeof(Class1), parameters);
+            var target = (Class1)targetAcc.Target;
+            Assert.AreEqual(42, target.A);
+            Assert.AreEqual(43L, target.B);
         }
         [TestMethod]
-        public void Priv_Invoke_Private_withoutParam()
+        public void Priv_Ctor_Dynamic_2Params()
         {
-            var target = new Class1();
-            var targetAcc = new PrivateObjectWrapper(target);
-            var actual = targetAcc.Invoke("PrivateMethod");
-            Assert.AreEqual("PrivateMethod", actual);
+            var parameters = new object[] { 42, 43L };
+
+            var targetAcc = new PrivateObjectWrapper("ClassLibrary1", "ClassLibrary1.Class1", parameters);
+
+            var target = (Class1)targetAcc.Target;
+            Assert.AreEqual(42, target.A);
+            Assert.AreEqual(43L, target.B);
         }
         [TestMethod]
-        public void Priv_Invoke_Public_withParams()
+        public void Priv_Ctor_MemberToAccess()
         {
-            var target = new Class1();
-            var targetAcc = new PrivateObjectWrapper(target);
-            var actual = targetAcc.Invoke("PublicMethod", 42);
-            Assert.AreEqual(43, actual);
+            var targetAcc = new PrivateObjectWrapper(new Class1(), "C");
+            var actual = targetAcc.Invoke("GetNinetyNine");
+            Assert.AreEqual(99, actual);
+
+            targetAcc = new PrivateObjectWrapper(new Class1(), "C.D");
+            actual = targetAcc.Invoke("GetNinetyEight");
+            Assert.AreEqual(98, actual);
         }
         [TestMethod]
-        public void Priv_Invoke_Private_withParams()
+        public void Priv_Ctor_Generic()
         {
-            var target = new Class1();
-            var targetAcc = new PrivateObjectWrapper(target);
-            var actual = targetAcc.Invoke("PrivateMethod", 42, 0);
-            Assert.AreEqual(44, actual);
+            var types = new[] { typeof(long), typeof(DateTime) };
+            var now = DateTime.Now;
+            var values = new object[] { 42L, now };
+
+            var targetAcc = new PrivateObjectWrapper(typeof(Class2<long, DateTime>), types, values);
+
+            var target = (Class2<long, DateTime>)targetAcc.Target;
+            Assert.AreEqual(42L, target.A);
+            Assert.AreEqual(now, target.B);
         }
         [TestMethod]
-        public void Priv_Invoke_Public_withParamsAndTypes()
+        public void Priv_Ctor_DynamicGeneric()
         {
-            var target = new Class1();
-            var targetAcc = new PrivateObjectWrapper(target);
-            var paramTypes = new[] { typeof(int) };
-            var values = new object[] { 42 };
-            var actual = targetAcc.Invoke("PublicMethod", paramTypes, values);
-            Assert.AreEqual(43, actual);
+            var types = new[] { typeof(long), typeof(DateTime) };
+            var now = DateTime.Now;
+            var values = new object[] { 42L, now };
+
+            var targetAcc = new PrivateObjectWrapper("ClassLibrary1", "ClassLibrary1.Class2`2[System.Int64, System.DateTime]", types, values);
+
+            var target = (Class2<long, DateTime>)targetAcc.Target;
+            Assert.AreEqual(42L, target.A);
+            Assert.AreEqual(now, target.B);
         }
-        [TestMethod]
-        public void Priv_Invoke_Private_withParamsAndTypes()
-        {
-            var target = new Class1();
-            var targetAcc = new PrivateObjectWrapper(target);
-            var paramTypes = new[] { typeof(int), typeof(int) };
-            var values = new object[] { 42, 0 };
-            var actual = targetAcc.Invoke("PrivateMethod", paramTypes, values);
-            Assert.AreEqual(44, actual);
-        }
+
+        /* ============================================================= Property and field tests */
 
         [TestMethod]
         public void Priv_Field_Public()
@@ -124,6 +133,81 @@ namespace MsTests.Net
             targetAcc.SetFieldOrProperty(memberName, expected);
             actual = targetAcc.GetFieldOrProperty(memberName);
             Assert.AreEqual(expected, actual);
+        }
+
+        /* ============================================================= Method tests */
+
+        [TestMethod]
+        public void Priv_Invoke_Public_withoutParam()
+        {
+            var target = new Class1();
+            var targetAcc = new PrivateObjectWrapper(target);
+            var actual = targetAcc.Invoke("PublicMethod");
+            Assert.AreEqual("PublicMethod", actual);
+        }
+        [TestMethod]
+        public void Priv_Invoke_Private_withoutParam()
+        {
+            var target = new Class1();
+            var targetAcc = new PrivateObjectWrapper(target);
+            var actual = targetAcc.Invoke("PrivateMethod");
+            Assert.AreEqual("PrivateMethod", actual);
+        }
+        [TestMethod]
+        public void Priv_Invoke_Public_withParams()
+        {
+            var target = new Class1();
+            var targetAcc = new PrivateObjectWrapper(target);
+            var actual = targetAcc.Invoke("PublicMethod", 42);
+            Assert.AreEqual(43, actual);
+        }
+        [TestMethod]
+        public void Priv_Invoke_Private_withParams()
+        {
+            var target = new Class1();
+            var targetAcc = new PrivateObjectWrapper(target);
+            var actual = targetAcc.Invoke("PrivateMethod", 42, 0);
+            Assert.AreEqual(44, actual);
+        }
+        [TestMethod]
+        public void Priv_Invoke_Public_withParamsAndTypes()
+        {
+            var target = new Class1();
+            var targetAcc = new PrivateObjectWrapper(target);
+            var paramTypes = new[] { typeof(int) };
+            var values = new object[] { 42 };
+            var actual = targetAcc.Invoke("PublicMethod", paramTypes, values);
+            Assert.AreEqual(43, actual);
+        }
+        [TestMethod]
+        public void Priv_Invoke_Private_withParamsAndTypes()
+        {
+            var target = new Class1();
+            var targetAcc = new PrivateObjectWrapper(target);
+            var paramTypes = new[] { typeof(int), typeof(int) };
+            var values = new object[] { 42, 0 };
+            var actual = targetAcc.Invoke("PrivateMethod", paramTypes, values);
+            Assert.AreEqual(44, actual);
+        }
+        [TestMethod]
+        public void Priv_Invoke_Public_Generic()
+        {
+            var target = new Class1();
+            var targetAcc = new PrivateObjectWrapper(target);
+            var types = new[] { typeof(long), typeof(DateTime) };
+            var values = new object[] { 42L, DateTime.Now };
+            var actual = targetAcc.Invoke("PublicGenericMethod", types, values, types);
+            Assert.AreEqual("Int64 DateTime", actual);
+        }
+        [TestMethod]
+        public void Priv_Invoke_Private_Generic()
+        {
+            var target = new Class1();
+            var targetAcc = new PrivateObjectWrapper(target);
+            var types = new[] { typeof(long), typeof(DateTime) };
+            var values = new object[] { 42L, DateTime.Now };
+            var actual = targetAcc.Invoke("PrivateGenericMethod", types, values, types);
+            Assert.AreEqual("Int64 DateTime", actual);
         }
     }
 }
