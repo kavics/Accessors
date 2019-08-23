@@ -93,8 +93,54 @@ namespace MsTests.Net
             actual = targetAcc.GetStaticFieldOrProperty(memberName);
             Assert.AreEqual(expected, actual);
         }
+
         /* ============================================================= Method tests */
 
-
+        [TestMethod]
+        public void PrivType_Invoke_Public_withoutParam()
+        {
+            var targetAcc = new PrivateTypeWrapper(typeof(StaticClass1));
+            var actual = targetAcc.InvokeStatic("PublicMethod");
+            Assert.AreEqual("PublicStaticMethod", actual);
+        }
+        [TestMethod]
+        public void PrivType_Invoke_Private_withoutParam()
+        {
+            var targetAcc = new PrivateTypeWrapper(typeof(StaticClass1));
+            var actual = targetAcc.InvokeStatic("PrivateMethod");
+            Assert.AreEqual("PrivateStaticMethod", actual);
+        }
+        [TestMethod]
+        public void PrivType_Invoke_Public_withParams()
+        {
+            var targetAcc = new PrivateTypeWrapper(typeof(StaticClass1));
+            var actual = targetAcc.InvokeStatic("PublicMethod", 42);
+            Assert.AreEqual(43, actual);
+        }
+        [TestMethod]
+        public void PrivType_Invoke_Private_withParams()
+        {
+            var targetAcc = new PrivateTypeWrapper(typeof(StaticClass1));
+            var actual = targetAcc.InvokeStatic("PrivateMethod", 42, 0);
+            Assert.AreEqual(44, actual);
+        }
+        [TestMethod]
+        public void PrivType_Invoke_Public_withParamsAndTypes()
+        {
+            var targetAcc = new PrivateTypeWrapper(typeof(StaticClass1));
+            var paramTypes = new[] { typeof(int) };
+            var values = new object[] { 42 };
+            var actual = targetAcc.InvokeStatic("PublicMethod", paramTypes, values);
+            Assert.AreEqual(43, actual);
+        }
+        [TestMethod]
+        public void PrivType_Invoke_Private_withParamsAndTypes()
+        {
+            var targetAcc = new PrivateTypeWrapper(typeof(StaticClass1));
+            var paramTypes = new[] { typeof(int), typeof(int) };
+            var values = new object[] { 42, 0 };
+            var actual = targetAcc.InvokeStatic("PrivateMethod", paramTypes, values);
+            Assert.AreEqual(44, actual);
+        }
     }
 }

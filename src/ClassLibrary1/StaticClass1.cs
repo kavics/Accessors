@@ -12,6 +12,8 @@ namespace ClassLibrary1
         private static string PrivateProperty { get; set; }
         public static string PublicProperty { get; set; }
 
+        /* =========================================== Methods */
+
         public static string PublicMethod()
         {
             return "PublicStaticMethod";
@@ -28,15 +30,6 @@ namespace ClassLibrary1
         private static int PrivateMethod(int a, int b = 0)
         {
             return a + b + 2;
-        }
-
-        public static string PublicGenericMethod<T1, T2>(T1 o1, T2 o2)
-        {
-            return o1.GetType().Name + " " + o2.GetType().Name;
-        }
-        private static string PrivateGenericMethod<T1, T2>(T1 o1, T2 o2)
-        {
-            return o1.GetType().Name + " " + o2.GetType().Name;
         }
     }
 }

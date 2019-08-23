@@ -43,13 +43,9 @@ namespace MsTests.Net
         {
             return base.InvokeStatic(name, args);
         }
-        public new object InvokeStatic(string name, Type[] parameterTypes, object[] args, Type[] typeArguments)
-        {
-            return base.InvokeStatic(name, parameterTypes, args, typeArguments);
-        }
         public new object InvokeStatic(string name, Type[] parameterTypes, object[] args)
         {
-            return InvokeStatic(name, parameterTypes, args);
+            return base.InvokeStatic(name, parameterTypes, args);
         }
     }
 }
