@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MsTests.Net
 {
-    public class PrivateObjectWrapper : PrivateObject
+    internal class PrivateObjectWrapper : PrivateObject
     {
         public PrivateObjectWrapper(object obj) : base(obj) { }
         public PrivateObjectWrapper(object obj, string memberToAccess) : base(obj, memberToAccess) { }

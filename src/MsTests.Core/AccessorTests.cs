@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MsTests
 {
-    [TestClass]
+    //[TestClass]
     public class AccessorTests
     {
         [TestMethod]

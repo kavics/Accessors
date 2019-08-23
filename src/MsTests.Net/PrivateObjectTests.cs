@@ -10,7 +10,7 @@ namespace MsTests.Net
         /* ============================================================= Construction tests */
 
         [TestMethod]
-        public void Priv_Ctor_2Params()
+        public void PrivObj_Ctor_2Params()
         {
             var parameters = new object[] { 42, 43L };
             var targetAcc = new PrivateObjectWrapper(typeof(Class1), parameters);
@@ -19,7 +19,7 @@ namespace MsTests.Net
             Assert.AreEqual(43L, target.B);
         }
         [TestMethod]
-        public void Priv_Ctor_Dynamic_2Params()
+        public void PrivObj_Ctor_Dynamic_2Params()
         {
             var parameters = new object[] { 42, 43L };
 
@@ -30,7 +30,7 @@ namespace MsTests.Net
             Assert.AreEqual(43L, target.B);
         }
         [TestMethod]
-        public void Priv_Ctor_MemberToAccess()
+        public void PrivObj_Ctor_MemberToAccess()
         {
             var targetAcc = new PrivateObjectWrapper(new Class1(), "C");
             var actual = targetAcc.Invoke("GetNinetyNine");
@@ -41,7 +41,7 @@ namespace MsTests.Net
             Assert.AreEqual(98, actual);
         }
         [TestMethod]
-        public void Priv_Ctor_Generic()
+        public void PrivObj_Ctor_Generic()
         {
             var types = new[] { typeof(long), typeof(DateTime) };
             var now = DateTime.Now;
@@ -54,7 +54,7 @@ namespace MsTests.Net
             Assert.AreEqual(now, target.B);
         }
         [TestMethod]
-        public void Priv_Ctor_DynamicGeneric()
+        public void PrivObj_Ctor_DynamicGeneric()
         {
             var types = new[] { typeof(long), typeof(DateTime) };
             var now = DateTime.Now;
@@ -70,23 +70,23 @@ namespace MsTests.Net
         /* ============================================================= Property and field tests */
 
         [TestMethod]
-        public void Priv_Field_Public()
+        public void PrivObj_Field_Public()
         {
             StringFieldTest("PublicField");
         }
         [TestMethod]
-        public void Priv_Field_Private()
+        public void PrivObj_Field_Private()
         {
             StringFieldTest("_privateField");
         }
 
         [TestMethod]
-        public void Priv_Property_Public()
+        public void PrivObj_Property_Public()
         {
             StringPropertyTest("PublicProperty");
         }
         [TestMethod]
-        public void Priv_Property_Private()
+        public void PrivObj_Property_Private()
         {
             StringPropertyTest("PrivateProperty");
         }
@@ -138,7 +138,7 @@ namespace MsTests.Net
         /* ============================================================= Method tests */
 
         [TestMethod]
-        public void Priv_Invoke_Public_withoutParam()
+        public void PrivObj_Invoke_Public_withoutParam()
         {
             var target = new Class1();
             var targetAcc = new PrivateObjectWrapper(target);
@@ -146,7 +146,7 @@ namespace MsTests.Net
             Assert.AreEqual("PublicMethod", actual);
         }
         [TestMethod]
-        public void Priv_Invoke_Private_withoutParam()
+        public void PrivObj_Invoke_Private_withoutParam()
         {
             var target = new Class1();
             var targetAcc = new PrivateObjectWrapper(target);
@@ -154,7 +154,7 @@ namespace MsTests.Net
             Assert.AreEqual("PrivateMethod", actual);
         }
         [TestMethod]
-        public void Priv_Invoke_Public_withParams()
+        public void PrivObj_Invoke_Public_withParams()
         {
             var target = new Class1();
             var targetAcc = new PrivateObjectWrapper(target);
@@ -162,7 +162,7 @@ namespace MsTests.Net
             Assert.AreEqual(43, actual);
         }
         [TestMethod]
-        public void Priv_Invoke_Private_withParams()
+        public void PrivObj_Invoke_Private_withParams()
         {
             var target = new Class1();
             var targetAcc = new PrivateObjectWrapper(target);
@@ -170,7 +170,7 @@ namespace MsTests.Net
             Assert.AreEqual(44, actual);
         }
         [TestMethod]
-        public void Priv_Invoke_Public_withParamsAndTypes()
+        public void PrivObj_Invoke_Public_withParamsAndTypes()
         {
             var target = new Class1();
             var targetAcc = new PrivateObjectWrapper(target);
@@ -180,7 +180,7 @@ namespace MsTests.Net
             Assert.AreEqual(43, actual);
         }
         [TestMethod]
-        public void Priv_Invoke_Private_withParamsAndTypes()
+        public void PrivObj_Invoke_Private_withParamsAndTypes()
         {
             var target = new Class1();
             var targetAcc = new PrivateObjectWrapper(target);
@@ -190,7 +190,7 @@ namespace MsTests.Net
             Assert.AreEqual(44, actual);
         }
         [TestMethod]
-        public void Priv_Invoke_Public_Generic()
+        public void PrivObj_Invoke_Public_Generic()
         {
             var target = new Class1();
             var targetAcc = new PrivateObjectWrapper(target);
@@ -200,7 +200,7 @@ namespace MsTests.Net
             Assert.AreEqual("Int64 DateTime", actual);
         }
         [TestMethod]
-        public void Priv_Invoke_Private_Generic()
+        public void PrivObj_Invoke_Private_Generic()
         {
             var target = new Class1();
             var targetAcc = new PrivateObjectWrapper(target);

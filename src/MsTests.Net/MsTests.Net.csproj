@@ -51,6 +51,8 @@
   <ItemGroup>
     <Compile Include="PrivateObjectTests.cs" />
     <Compile Include="PrivateObjectWrapper.cs" />
+    <Compile Include="PrivateTypeTests.cs" />
+    <Compile Include="PrivateTypeWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
