@@ -1,7 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Kavics</Authors>
+    <Description>Lightweight .NET Core alternative of old .NET PrivateObject / PrivateType.</Description>
+    <PackageTags>PrivateObject PrivateType MsTest .netcore</PackageTags>
   </PropertyGroup>
 
 </Project>
