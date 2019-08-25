@@ -19,17 +19,25 @@ namespace Accessors
         }
         public TypeAccessor(string assemblyName, string typeName)
         {
+            TargetType = GetTypeByName(assemblyName, typeName);
+        }
+        internal static Type GetTypeByName(string assemblyName, string typeName)
+        {
             var asm = AppDomain.CurrentDomain.GetAssemblies()
                 .FirstOrDefault(a => a.GetName().Name == assemblyName);
             if (asm == null)
                 throw new TypeLoadException("Unknown assembly: " + assemblyName);
 
-            var type = asm.GetTypes()
-                .FirstOrDefault(t => t.FullName == typeName);
+            var tName = typeName;
+            var p = tName.IndexOf("[");
+            if (p > 0)
+                tName = tName.Substring(0, p);
+
+            var type = asm.GetType(tName, false, false);
             if (type == null)
                 throw new TypeLoadException("Unknown type: " + typeName);
 
-            TargetType = type;
+            return type;
         }
 
         public object GetStaticField(string fieldName)
@@ -108,11 +116,14 @@ namespace Accessors
 
         public object InvokeStatic(string name, params object[] args)
         {
-            throw new NotImplementedException();
+            var paramTypes = args.Select(x => x.GetType()).ToArray();
+            return InvokeStatic(name, paramTypes, args);
         }
         public object InvokeStatic(string name, Type[] parameterTypes, object[] args)
         {
-            throw new NotImplementedException();
+            var method = TargetType.GetMethod(name, _privateFlags, null, parameterTypes, null)
+                ?? TargetType.GetMethod(name, _publicFlags, null, parameterTypes, null);
+            return method.Invoke(null, args);
         }
 
     }

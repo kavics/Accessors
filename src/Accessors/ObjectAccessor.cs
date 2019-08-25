@@ -21,17 +21,47 @@ namespace Accessors
         }
         public ObjectAccessor(Type type, params object[] arguments)
         {
-            throw new NotImplementedException();
+            _targetType = type;
+            var ctor = GetConstructorByParams(type, arguments);
+            Target = ctor.Invoke(arguments);
+        }
+        public ObjectAccessor(Type type, Type[] parameterTypes, object[] arguments)
+        {
+            _targetType = type;
+            var ctor = GetConstructorByTypes(type, parameterTypes);
+            Target = ctor.Invoke(arguments);
         }
         public ObjectAccessor(string assemblyName, string typeName, params object[] arguments)
         {
-            throw new NotImplementedException();
+            var type = TypeAccessor.GetTypeByName(assemblyName, typeName);
+            _targetType = type;
+            var ctor = GetConstructorByParams(type, arguments);
+            Target = ctor.Invoke(arguments);
+        }
+        public ObjectAccessor(string assemblyName, string typeName, Type[] parameterTypes, params object[] arguments)
+        {
+            var type = TypeAccessor.GetTypeByName(assemblyName, typeName);
+            _targetType = type;
+            var ctor = GetConstructorByTypes(type, parameterTypes);
+            Target = ctor.Invoke(arguments);
         }
         public ObjectAccessor(object target, string memberToAccess)
         {
             throw new NotImplementedException();
         }
 
+        private ConstructorInfo GetConstructorByParams(Type type, object[] arguments)
+        {
+            var argTypes = arguments.Select(a => a.GetType()).ToArray();
+            return GetConstructorByTypes(type, argTypes);
+        }
+        private ConstructorInfo GetConstructorByTypes(Type type, Type[] argTypes)
+        {
+            var ctor = type.GetConstructor(argTypes);
+            if (ctor == null)
+                throw new ApplicationException("Constructor not found.");
+            return ctor;
+        }
 
         public object GetField(string fieldName)
         {
@@ -110,13 +140,13 @@ namespace Accessors
         public object Invoke(string name, params object[] args)
         {
             var paramTypes = args.Select(x => x.GetType()).ToArray();
-            var method = _targetType.GetMethod(name, _privateFlags, null, paramTypes, null)
-                ?? _targetType.GetMethod(name, _publicFlags, null, paramTypes, null);
-            return method.Invoke(Target, args);
+            return Invoke(name, paramTypes, args);
         }
         public object Invoke(string name, Type[] parameterTypes, object[] args)
         {
-            throw new NotImplementedException();
+            var method = _targetType.GetMethod(name, _privateFlags, null, parameterTypes, null)
+                ?? _targetType.GetMethod(name, _publicFlags, null, parameterTypes, null);
+            return method.Invoke(Target, args);
         }
         public object Invoke(string name, Type[] parameterTypes, object[] args, Type[] typeArguments)
         {
